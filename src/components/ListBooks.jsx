@@ -6,7 +6,8 @@ import Bookshelf from "./Bookshelf";
 const ListBooks = ({ reads, onUpdate }) => {
   const history = useHistory();
   const shelves = [...new Set(reads.map((book) => book.shelf))];
-  return (
+
+  return reads.length > 0 ? (
     <div className="list-books">
       <div className="list-books-title">
         <h1>MyReads</h1>
@@ -28,6 +29,8 @@ const ListBooks = ({ reads, onUpdate }) => {
         <button onClick={() => history.push("/search")}>Add a book</button>
       </div>
     </div>
+  ) : (
+    <p>no Books</p>
   );
 };
 
