@@ -1,7 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
+import _ from "lodash";
 
-const Book = ({ book: { title, imageLinks, authors, shelf }, shelves }) => {
+const Book = ({ book, shelves, onUpdate }) => {
+  const history = useHistory();
+  const handleUpdate = (book, e) => {
+    onUpdate(book, e.target.value);
+    history.push("/");
+  };
   return (
     <li>
       <div className="book">
@@ -11,26 +18,33 @@ const Book = ({ book: { title, imageLinks, authors, shelf }, shelves }) => {
             style={{
               width: 128,
               height: 193,
-              backgroundImage: `url("{${imageLinks && imageLinks.thumbnail}}")`,
+              backgroundImage: `url("${
+                book.imageLinks && book.imageLinks.thumbnail
+              }")`,
             }}
           />
           <div className="book-shelf-changer">
-            <select>
+            <select
+              defaultValue={book.shelf ? book.shelf : "none"}
+              onChange={(e) => handleUpdate(book, e)}
+            >
               <option value="move" disabled>
                 Move to...
               </option>
-              {shelves.map((s) => (
-                <option value={s} selected={s === shelf}>
-                  {s}
+              {shelves.map((s, index) => (
+                <option key={index} value={s}>
+                  {_.startCase(s)}
                 </option>
               ))}
               <option value="none">None</option>
             </select>
           </div>
         </div>
-        <div className="book-title">{title}</div>
+        <div className="book-title">{book.title}</div>
         <div className="book-authors">
-          {authors && authors.length && authors.map((a) => <p>{a}</p>)}
+          {book.authors &&
+            book.authors.length > 0 &&
+            book.authors.map((a, index) => <p key={index}>{a}</p>)}
         </div>
       </div>
     </li>
@@ -39,6 +53,8 @@ const Book = ({ book: { title, imageLinks, authors, shelf }, shelves }) => {
 
 Book.propTypes = {
   book: PropTypes.object.isRequired,
+  shelves: PropTypes.array.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default Book;

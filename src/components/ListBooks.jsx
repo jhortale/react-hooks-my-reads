@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 import Bookshelf from "./Bookshelf";
 
-const ListBooks = ({ reads }) => {
+const ListBooks = ({ reads, onUpdate }) => {
+  const history = useHistory();
   const shelves = [...new Set(reads.map((book) => book.shelf))];
   return (
     <div className="list-books">
@@ -13,6 +15,7 @@ const ListBooks = ({ reads }) => {
         <div>
           {shelves.map((shelf, index) => (
             <Bookshelf
+              onUpdate={onUpdate}
               key={index}
               shelf={shelf}
               shelves={shelves}
@@ -22,9 +25,7 @@ const ListBooks = ({ reads }) => {
         </div>
       </div>
       <div className="open-search">
-        <button onClick={() => this.setState({ showSearchPage: true })}>
-          Add a book
-        </button>
+        <button onClick={() => history.push("/search")}>Add a book</button>
       </div>
     </div>
   );
@@ -32,6 +33,7 @@ const ListBooks = ({ reads }) => {
 
 ListBooks.propTypes = {
   reads: PropTypes.array.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default ListBooks;
