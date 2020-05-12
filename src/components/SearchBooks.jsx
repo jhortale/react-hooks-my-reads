@@ -56,7 +56,7 @@ const SearchBooks = ({ result, onSearch, reads, term, onUpdate }) => {
 };
 
 SearchBooks.propTypes = {
-  result: PropTypes.array.isRequired,
+  result: PropTypes.array,
   reads: PropTypes.array.isRequired,
   term: PropTypes.string,
   onUpdate: PropTypes.func.isRequired,
