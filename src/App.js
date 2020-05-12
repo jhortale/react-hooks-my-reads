@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { Router, Switch, Route } from "react-router-dom";
+import * as BooksAPI from "./BooksAPI";
+import "./App.css";
+import SearchBooks from "./components/SearchBooks";
+import ListBooks from "./components/ListBooks";
 
 function App() {
+  const [reads, setReads] = useState([{}]);
+  useEffect(() => {
+    //     var grouped = _.mapValues(_.groupBy(cars, 'make'),
+    //                           clist => clist.map(car => _.omit(car, 'make')));
+
+    // console.log(grouped);
+    BooksAPI.getAll().then((books) => setReads(books));
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <Route exact path="/">
+        <ListBooks reads={reads} />
+      </Route>
+      <Route path="/search">
+        <SearchBooks />
+      </Route>
+    </Switch>
   );
 }
 
