@@ -10,6 +10,9 @@ I hope you enjoy.
 
 In the project directory, you can run:
 
+### npm i
+Install all the project dependencies required to run the application
+
 ### `yarn start`
 
 Runs the app in the development mode.<br />
