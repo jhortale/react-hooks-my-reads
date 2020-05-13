@@ -14,6 +14,7 @@ const Bookshelf = ({ shelf, shelves, reads, onUpdate }) => {
             <Book
               key={index}
               book={book}
+              reads={reads}
               shelves={shelves}
               onUpdate={onUpdate}
             />

@@ -1,14 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import _ from "lodash";
 
-const Book = ({ book, shelves, onUpdate }) => {
+const Book = ({ reads, book, shelves, onUpdate }) => {
   const history = useHistory();
+  const location = useLocation();
   const handleUpdate = (book, e) => {
     onUpdate(book, e.target.value);
-    history.push("/");
+    const target = "/";
+    target !== location.pathname && history.push(target);
+    console.log(target !== location.pathname);
   };
+
+  let currentShelf = "none";
+  reads.length > 0 &&
+    reads
+      .filter((read) => read.id === book.id)
+      .map((read) => (currentShelf = read.shelf));
+
   return (
     !_.isEmpty(book) && (
       <li>
@@ -26,9 +36,7 @@ const Book = ({ book, shelves, onUpdate }) => {
             />
             <div className="book-shelf-changer">
               <select
-                defaultValue={
-                  !book.shelf || book.shelf === undefined ? "none" : book.shelf
-                }
+                defaultValue={currentShelf}
                 onChange={(e) => handleUpdate(book, e)}
               >
                 <option value="move" disabled>
@@ -56,6 +64,7 @@ const Book = ({ book, shelves, onUpdate }) => {
 };
 
 Book.propTypes = {
+  reads: PropTypes.array.isRequired,
   book: PropTypes.object.isRequired,
   shelves: PropTypes.array.isRequired,
   onUpdate: PropTypes.func.isRequired,
